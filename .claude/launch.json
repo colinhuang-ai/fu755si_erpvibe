@@ -1,6 +1,7 @@
 {
   "version": "0.0.1",
   "configurations": [
-    { "name": "driveros", "runtimeExecutable": "npm", "runtimeArgs": ["--prefix", "ui", "run", "dev"], "port": 5173 }
+    { "name": "driveros", "runtimeExecutable": "npm", "runtimeArgs": ["--prefix", "driveos", "run", "dev"], "port": 5173 },
+    { "name": "driveros-admin", "runtimeExecutable": "npm", "runtimeArgs": ["--prefix", "admin", "run", "dev"], "port": 5174 }
   ]
 }
