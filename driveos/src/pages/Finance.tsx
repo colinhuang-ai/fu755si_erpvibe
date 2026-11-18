@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { Avatar, useSticky } from '../components/common';
 import { CATS, SALARY } from '../data/config';
 import { MOCK_TODAY } from '../lib/clock';
-import { pay } from '../lib/domain';
+import { pay, payForecast } from '../lib/domain';
 import { dmy, dow, fmt, money, sum, WD, dm } from '../lib/format';
 import { useStore } from '../store';
 import type { ExpCat, Expense } from '../types';
@@ -94,12 +94,13 @@ function Pay() {
   const { s } = useStore();
   const { openSheet } = useUI();
   const p = pay(s);
+  const f = payForecast(s);
   return (
     <>
       <div className="wallet mx">
-        <div className="w-top"><span>Thực nhận dự kiến</span><span>Tháng 11/2026</span></div>
+        <div className="w-top"><span>Thực nhận tạm tính đến hôm nay</span><span>Tháng 11/2026</span></div>
         <div className="w-amt">{money(p.net)}</div>
-        <div className="w-sub">Chốt lương {dmy(SALARY.payday)} · số liệu tạm tính</div>
+        <div className="w-sub">Dự kiến cuối tháng {money(f.net)} · chốt lương {dmy(SALARY.payday)}</div>
       </div>
 
       <Group header="Thu nhập">

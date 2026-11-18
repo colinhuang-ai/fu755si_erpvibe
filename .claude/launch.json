@@ -1,7 +1,57 @@
 {
   "version": "0.0.1",
   "configurations": [
-    { "name": "driveros", "runtimeExecutable": "npm", "runtimeArgs": ["--prefix", "driveos", "run", "dev"], "port": 5173 },
-    { "name": "driveros-admin", "runtimeExecutable": "npm", "runtimeArgs": ["--prefix", "admin", "run", "dev"], "port": 5174 }
+    {
+      "name": "driveros",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": [
+        "--prefix",
+        "driveos",
+        "run",
+        "dev"
+      ],
+      "port": 5175
+    },
+    {
+      "name": "driveros-admin",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": [
+        "--prefix",
+        "admin",
+        "run",
+        "dev"
+      ],
+      "port": 5174
+    },
+    {
+      "name": "driveros-dist",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": [
+        "--prefix",
+        "driveos",
+        "run",
+        "preview",
+        "--",
+        "--port",
+        "4173",
+        "--strictPort"
+      ],
+      "port": 4173
+    },
+    {
+      "name": "admin-dist",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": [
+        "--prefix",
+        "admin",
+        "run",
+        "preview",
+        "--",
+        "--port",
+        "4174",
+        "--strictPort"
+      ],
+      "port": 4174
+    }
   ]
 }

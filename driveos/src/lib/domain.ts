@@ -102,6 +102,42 @@ export function pay(s: State) {
   return { trips, tripCount: done.length, tier, reimb, adv, ins, income, net: income + reimb - ins - adv };
 }
 
+/**
+ * Dự kiến thu nhập cuối tháng = phần đã chắc (chuyến hoàn tất) + chuyến đã xếp lịch trong tháng
+ * + ước tính cho các ngày làm việc còn lại chưa có lịch (theo phụ cấp trung bình mỗi ngày đã chạy).
+ */
+export function payForecast(s: State) {
+  const p = pay(s);
+  const month = MOCK_TODAY.slice(0, 7);
+  const [y, m] = month.split('-').map(Number);
+  const lastDay = new Date(y, m, 0).getDate();
+  const done = doneJobs(s);
+  const workedDays = new Set(done.map(j => j.date)).size;
+  const perDayFee = workedDays ? p.trips / workedDays : 0;
+  const perDayTrips = workedDays ? done.length / workedDays : 0;
+
+  const open = s.jobs.filter(j => j.date.startsWith(month) && j.date >= MOCK_TODAY && j.status < 5 && !j.rejected);
+  const planned = sum(open, j => j.fee);
+  const plannedDates = new Set(open.filter(j => j.date > MOCK_TODAY).map(j => j.date));
+  let estDays = 0;
+  for (let d = Number(MOCK_TODAY.slice(8)) + 1; d <= lastDay; d++) {
+    const iso = `${month}-${String(d).padStart(2, '0')}`;
+    if (new Date(y, m - 1, d).getDay() !== 0 && !plannedDates.has(iso)) estDays++;
+  }
+  const estimated = Math.round((estDays * perDayFee) / 10000) * 10000;
+  const estTrips = Math.round(estDays * perDayTrips);
+  const trips = p.trips + planned + estimated;
+  const income = SALARY.base + SALARY.hazard + trips + p.tier.amt;
+  const score = kpiScore(s);
+  const idx = KPI_TIERS.indexOf(p.tier);
+  return {
+    ...p, earned: p.net, earnedTrips: p.trips, doneCount: done.length,
+    planned, plannedCount: open.length, estimated, estTrips, estDays,
+    trips, tripCount: done.length + open.length + estTrips, income,
+    net: income + p.reimb - p.ins - p.adv, score, next: idx > 0 ? KPI_TIERS[idx - 1] : null
+  };
+}
+
 /* ---------------- Học tập & giấy tờ ---------------- */
 export const certDays = (exp: string) => daysBetween(MOCK_TODAY, exp);
 export const certTone = (d: number): Tone => (d < 0 ? 'red' : d <= 30 ? 'red' : d <= 60 ? 'orange' : 'green');

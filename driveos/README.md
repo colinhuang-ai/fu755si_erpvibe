@@ -20,7 +20,7 @@ Sửa dữ liệu mẫu: chỉnh `src/data/demo.ts` → `npm run db:seed` để 
 
 ```bash
 npm install
-npm run dev      # http://localhost:5173
+npm run dev      # http://localhost:5175
 npm run build    # kiểm tra kiểu + build ra dist/
 ```
 

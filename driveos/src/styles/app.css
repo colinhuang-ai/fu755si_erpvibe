@@ -185,3 +185,7 @@
 .spinner.sm { width: 18px; height: 18px; }
 .spinner.light { border-color: rgba(255, 255, 255, .35); border-top-color: #fff; }
 @keyframes spin { to { transform: rotate(360deg); } }
+
+/* ô thu nhập: tới hôm nay / dự kiến cuối tháng */
+.inc-split { height: 1px; transform: scaleY(.5); background: var(--sep); margin: 8px 0 6px; }
+.sum-v.sm { font-size: 22px; line-height: 28px; color: var(--green); }
